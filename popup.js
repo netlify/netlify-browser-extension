@@ -1,28 +1,7 @@
-/*
-Copyright (c) 2013-2014 by White Fir Design
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, only version 2 of the License is applicable.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 //Send version request to background page
-chrome.extension.sendMessage(
-  {
-    get_version: 'true'
-  },
-  function(response) {
-    // console.log('popupjs sendMessage received', { response });
-  }
-);
+chrome.extension.sendMessage({ get_version: 'true' }, function(response) {
+  // console.log('popupjs sendMessage received', { response });
+});
 
 //Update panel with version information
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
@@ -51,15 +30,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
         const slug = request.url.host.split('.')[0];
         // const img = document.getElementById('img');
         // img.src = res.screenshot_url;
-        ghbutton.onclick = () =>
-          chrome.windows.create({ url: res.repo_url, type: 'popup' }, function(
-            window
-          ) {});
-
-        dpbutton.onclick = () =>
-          chrome.windows.create({ url: res.admin_url, type: 'popup' }, function(
-            window
-          ) {});
+        ghbutton.href = res.repo_url;
+        dpbutton.href = res.admin_url;
         ghbutton.hidden = false;
         dpbutton.hidden = false;
       })
@@ -72,44 +44,4 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
         dpbutton.hidden = true;
       });
   }
-  // if (request.popup) {
-  //   document
-  //     .getElementById('label')
-  //     .appendChild(
-  //       document.createTextNode(
-  //         request.popup + chrome.i18n.getMessage('version')
-  //       )
-  //     );
-  //   document
-  //     .getElementById('version')
-  //     .appendChild(document.createTextNode(request.version));
-  //   if (
-  //     request.popup == 'Plesk' &&
-  //     (lowerVersion(request.version, plesk_11_version) ||
-  //       (parseFloat(request.version) >= parseFloat('11.5') &&
-  //         lowerVersion(request.version, plesk_115_version)) ||
-  //       (parseFloat(request.version) >= parseFloat('12.0') &&
-  //         lowerVersion(request.version, plesk_12_version)))
-  //   )
-  //     document
-  //       .getElementById('outdated')
-  //       .appendChild(
-  //         document.createTextNode(chrome.i18n.getMessage('outdated'))
-  //       );
-  //   if (
-  //     request.popup == 'cPanel' &&
-  //     request.version != 'Hidden' &&
-  //     lowerVersion(request.version, cpanel_version)
-  //   )
-  //     document
-  //       .getElementById('outdated')
-  //       .appendChild(
-  //         document.createTextNode(chrome.i18n.getMessage('outdated'))
-  //       );
-  // }
 });
-
-//Checks if version in use is lower than the current version
-function lowerVersion(in_use_version, current_version) {
-  return false;
-}

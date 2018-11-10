@@ -1,8 +1,3 @@
-var plesk_11_version = '11.0.9';
-var plesk_115_version = '11.5.30';
-var plesk_12_version = '12.0.18';
-var cpanel_version = '11.50';
-
 var getLocation = function(href) {
   var l = document.createElement('a');
   l.href = href;
@@ -39,84 +34,6 @@ function onMessage(request, sender, sendResponse) {
       slug
     });
   }
-  // //Set page action icon
-  // if (request.software) {
-  //   chrome.pageAction.show(sender.tab.id);
-  //   if (request.software == 'Plesk') {
-  //     if (
-  //       lowerVersion(request.version, plesk_11_version) ||
-  //       (parseFloat(request.version) >= parseFloat('11.5') &&
-  //         lowerVersion(request.version, plesk_115_version)) ||
-  //       (parseFloat(request.version) >= parseFloat('12.0') &&
-  //         lowerVersion(request.version, plesk_12_version))
-  //     ) {
-  //       chrome.pageAction.setIcon({
-  //         path: 'OutdatedPlesk.png',
-  //         tabId: sender.tab.id
-  //       });
-  //       chrome.pageAction.setTitle({
-  //         title:
-  //           chrome.i18n.getMessage('plesk_version_known_tooltip', [
-  //             request.version
-  //           ]) + chrome.i18n.getMessage('outdated'),
-  //         tabId: sender.tab.id
-  //       });
-  //     } else {
-  //       chrome.pageAction.setIcon({
-  //         path: 'Plesk.ico',
-  //         tabId: sender.tab.id
-  //       });
-  //       chrome.pageAction.setTitle({
-  //         title: chrome.i18n.getMessage('plesk_version_known_tooltip', [
-  //           request.version
-  //         ]),
-  //         tabId: sender.tab.id
-  //       });
-  //     }
-  //   } else if (request.software == 'cPanel') {
-  //     if (request.version == 'Unknown') {
-  //       chrome.pageAction.setTitle({
-  //         title: chrome.i18n.getMessage('cpanel_version_unknown_tooltip'),
-  //         tabId: sender.tab.id
-  //       });
-  //       chrome.pageAction.setIcon({
-  //         path: 'cpanel.ico',
-  //         tabId: sender.tab.id
-  //       });
-  //     } else if (lowerVersion(request.version, cpanel_version)) {
-  //       chrome.pageAction.setTitle({
-  //         title:
-  //           chrome.i18n.getMessage('cpanel_version_known_tooltip', [
-  //             request.version
-  //           ]) + chrome.i18n.getMessage('outdated'),
-  //         tabId: sender.tab.id
-  //       });
-  //       chrome.pageAction.setIcon({
-  //         path: 'OutdatedcPanel.png',
-  //         tabId: sender.tab.id
-  //       });
-  //     } else {
-  //       chrome.pageAction.setTitle({
-  //         title: chrome.i18n.getMessage('cpanel_version_known_tooltip', [
-  //           request.version
-  //         ]),
-  //         tabId: sender.tab.id
-  //       });
-  //       chrome.pageAction.setIcon({
-  //         path: 'cpanel.ico',
-  //         tabId: sender.tab.id
-  //       });
-  //     }
-  //   }
-  //   chrome.pageAction.setPopup({
-  //     tabId: sender.tab.id,
-  //     popup: 'popup.html'
-  //   });
-
-  //   //chrome.pageAction.setPopup({tabId: sender.tab.id, popup: "popup.html"});
-  //   sendResponse({});
-  // }
-
   if (request.get_version) {
     chrome.tabs.query(
       {
