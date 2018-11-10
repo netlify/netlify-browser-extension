@@ -4,11 +4,26 @@
   "name": "netlify-chrome-extension",
   "description": "netlify-chrome-extension",
   "version": "1.0",
-
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "src/popup.html"
+  "icons": {
+    "16": "logo16.png",
+    "48": "logo48.png",
+    "128": "logo128.png"
   },
-
+  "default_locale": "en_US",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_title": "Control Panel Version Check"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.netlify.com/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
   "permissions": ["activeTab"]
 }

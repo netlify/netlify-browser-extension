@@ -4,7 +4,8 @@
   "description": "Description",
   "main": "src/js/main.js",
   "scripts": {
-    "build": "parcel build src/js/main.js -d src/build/ -o main.js",
+    "build": "parcel build src/popup.html -d src/build/",
+    "oldbuild": "parcel build src/js/main.js -d src/build/ -o main.js",
     "watch": "parcel watch src/js/main.js -d src/build/ -o main.js"
   },
   "author": "Atakan Goktepe",
