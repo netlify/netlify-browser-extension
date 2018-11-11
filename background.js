@@ -9,27 +9,24 @@ function onMessage(request, sender, sendResponse) {
   //   sender,
   //   sendResponse
   // });
-  if (request.newPage) {
+  if (request.netlifyPage) {
     var url = getLocation(sender.url);
     var slug = url.hostname;
-    // console.log({ url, slug, bool: slug.includes('netlify') });
-    if (slug.includes('netlify')) {
-      chrome.pageAction.show(sender.tab.id);
-      chrome.pageAction.setIcon({
-        path: 'logo16.png',
-        tabId: sender.tab.id
-      });
-      chrome.pageAction.setTitle({
-        title: 'sldkjsldj',
-        tabId: sender.tab.id
-      });
-      chrome.pageAction.setPopup({
-        tabId: sender.tab.id,
-        popup: 'popup.html'
-      });
-    }
+    chrome.pageAction.show(sender.tab.id);
+    chrome.pageAction.setIcon({
+      path: 'logo16.png',
+      tabId: sender.tab.id
+    });
+    chrome.pageAction.setTitle({
+      title: 'Netlify Site!',
+      tabId: sender.tab.id
+    });
+    chrome.pageAction.setPopup({
+      tabId: sender.tab.id,
+      popup: 'popup.html'
+    });
     sendResponse({
-      // goes to
+      // goes to poup
       hiFrom: 'backgroundjs',
       slug
     });
