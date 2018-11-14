@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "netlify-chrome-extension",
-  "description": "netlify-chrome-extension",
+  "name": "netlify-browser-extension",
+  "description": "netlify-browser-extension",
   "version": "1.2.2",
   "icons": {
     "16": "logo16.png",
