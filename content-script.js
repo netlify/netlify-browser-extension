@@ -8,14 +8,14 @@ req.send(null);
 req.onreadystatechange = function() {
   var header = req.getResponseHeader('server');
   if (header === 'Netlify') {
-    chrome.extension.sendMessage({
+    browser.runtime.sendMessage({
       netlifyPage: true
     });
   }
 };
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-  chrome.extension.sendMessage(
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  browser.runtime.sendMessage(
     {
       hiFrom: 'contentscript',
       url: document.location

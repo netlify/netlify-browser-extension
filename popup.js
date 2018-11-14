@@ -1,10 +1,10 @@
 //Send version request to background page
-chrome.extension.sendMessage({ get_version: 'true' }, function(response) {
+browser.runtime.sendMessage({ get_version: 'true' }, function(response) {
   // console.log('popupjs sendMessage received', { response });
 });
 
 //Update panel with version information
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   const ghbutton = document.getElementById('ghbutton');
   const ghspan = document.getElementById('ghspan');
   const dpbutton = document.getElementById('dpbutton');
