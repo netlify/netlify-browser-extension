@@ -3,7 +3,7 @@
 Get it:
 
 - [for Chrome](https://chrome.google.com/webstore/detail/netlify-chrome-extension/dkhfpnphbcckigklfkaemnjdmghhcaoh)
-- for Firefox (not available yet)
+- [for Firefox](https://addons.mozilla.org/en-US/firefox/addon/netlify-browser-extension) [thanks to @nero2009!](https://github.com/netlify/netlify-browser-extension/pull/2#issuecomment-440616828)
 - for Edge (not available yet)
 
 ---
