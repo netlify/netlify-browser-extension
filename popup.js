@@ -1,10 +1,18 @@
+let webExtensionAPI;
+try {
+  webExtensionAPI = browser; //ffox
+} catch {
+  webExtensionAPI = chrome;
+}
 //Send version request to background page
-browser.runtime.sendMessage({ get_version: 'true' }, function(response) {
+webExtensionAPI.runtime.sendMessage({ get_version: 'true' }, function(
+  response
+) {
   // console.log('popupjs sendMessage received', { response });
 });
 
-browser.runtime.sendMessage({ method:'getHost'}, function(response) {
-  var host = response; 
+webExtensionAPI.runtime.sendMessage({ method: 'getHost' }, function(response) {
+  var host = response;
   const ghbutton = document.getElementById('ghbutton');
   const ghspan = document.getElementById('ghspan');
   const dpbutton = document.getElementById('dpbutton');
@@ -41,7 +49,9 @@ browser.runtime.sendMessage({ method:'getHost'}, function(response) {
       console.log('[netlify firefox extension] Nope :(', { err });
       document
         .getElementById('label')
-        .appendChild(document.createTextNode('but its deploy logs are not public.'));
+        .appendChild(
+          document.createTextNode('but its deploy logs are not public.')
+        );
       if (host.includes('netlify.com')) {
         // attempt to show deploys
         ghspan.hidden = true;
@@ -55,10 +65,7 @@ browser.runtime.sendMessage({ method:'getHost'}, function(response) {
         dpspan.hidden = true;
       }
     });
-
-  
 });
-
 
 // Honestly its probably more complicated than needs to be but i based it off of other extensions that do the same thing.
 
@@ -67,4 +74,3 @@ browser.runtime.sendMessage({ method:'getHost'}, function(response) {
 //     background.js activates the "browser action" (the little logo on the browser bar) if its a Netlify site by sniffing the Server field in the response header.
 //     if it is a Netlify site and you click the "browser action":
 //         if it is on .netlify.com host, popup.js checks if it is open source and manipulates popup.html accordingly.
-

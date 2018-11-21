@@ -5,20 +5,27 @@ var getLocation = function(href) {
   return l;
 };
 
+let webExtensionAPI;
+try {
+  webExtensionAPI = browser; //ffox
+} catch {
+  webExtensionAPI = chrome;
+}
+
 function onMessage(request, sender, sendResponse) {
   if (request.netlifyPage) {
     var url = getLocation(sender.url);
     var slug = url.hostname;
-    browser.pageAction.show(sender.tab.id);
-    browser.pageAction.setIcon({
+    webExtensionAPI.pageAction.show(sender.tab.id);
+    webExtensionAPI.pageAction.setIcon({
       path: 'logo16.png',
       tabId: sender.tab.id
     });
-    browser.pageAction.setTitle({
+    webExtensionAPI.pageAction.setTitle({
       title: 'Netlify Site!',
       tabId: sender.tab.id
     });
-    browser.pageAction.setPopup({
+    webExtensionAPI.pageAction.setPopup({
       tabId: sender.tab.id,
       popup: 'popup.html'
     });
@@ -29,18 +36,18 @@ function onMessage(request, sender, sendResponse) {
     });
   }
   if (request.method === 'setHost') {
-    urlHost = request.url
-  }else if(request.method === 'getHost'){
-    sendResponse(urlHost)
+    urlHost = request.url;
+  } else if (request.method === 'getHost') {
+    sendResponse(urlHost);
   }
   if (request.get_version) {
-    browser.tabs.query(
+    webExtensionAPI.tabs.query(
       {
         active: true,
         currentWindow: true
       },
       function(tabs) {
-        browser.tabs.sendMessage(
+        webExtensionAPI.tabs.sendMessage(
           tabs[0].id,
           {
             check: 'version'
@@ -53,7 +60,7 @@ function onMessage(request, sender, sendResponse) {
     );
   }
 }
-browser.runtime.onMessage.addListener(onMessage);
+webExtensionAPI.runtime.onMessage.addListener(onMessage);
 
 //Checks if version in use is lower than the current version
 function lowerVersion(in_use_version, current_version) {

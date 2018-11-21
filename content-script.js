@@ -2,18 +2,26 @@
 // but using fetch cos sync xmlhttp is blocked
 // but using webview cos fetch is blocked https://developer.chrome.com/extensions/manifest/sandbox
 // nvm lol you can do async xmlhttp
+
+let webExtensionAPI;
+try {
+  webExtensionAPI = browser; //ffox
+} catch {
+  webExtensionAPI = chrome;
+}
+
 var req = new XMLHttpRequest();
 req.open('GET', document.location);
 req.send(null);
 req.onreadystatechange = function() {
   var header = req.getResponseHeader('server');
   if (header === 'Netlify') {
-    browser.runtime.sendMessage({
+    webExtensionAPI.runtime.sendMessage({
       netlifyPage: true
     });
   }
 };
 
-var host = document.location.host
+var host = document.location.host;
 
-browser.runtime.sendMessage({method:'setHost', url: host})
+webExtensionAPI.runtime.sendMessage({ method: 'setHost', url: host });
