@@ -6,11 +6,6 @@ var getLocation = function(href) {
 };
 
 function onMessage(request, sender, sendResponse) {
-  console.log('backgroundjs', {
-    request,
-    sender,
-    sendResponse
-  });
   if (request.netlifyPage) {
     var url = getLocation(sender.url);
     var slug = url.hostname;

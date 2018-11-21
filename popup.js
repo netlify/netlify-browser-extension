@@ -1,7 +1,6 @@
 //Send version request to background page
 browser.runtime.sendMessage({ get_version: 'true' }, function(response) {
   // console.log('popupjs sendMessage received', { response });
-  console.log('here pop js second 3')
 });
 
 browser.runtime.sendMessage({ method:'getHost'}, function(response) {
