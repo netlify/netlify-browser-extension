@@ -41,13 +41,13 @@ browser.runtime.sendMessage({ method:'getHost'}, function(response) {
       console.log('[netlify firefox extension] Nope :(', { err });
       document
         .getElementById('label')
-        .appendChild(document.createTextNode('but it is not open source'));
+        .appendChild(document.createTextNode('but its deploy logs are not public.'));
       if (host.includes('netlify.com')) {
         // attempt to show deploys
         ghspan.hidden = true;
         dpspan.hidden = false;
         dpbutton.hidden = false;
-        dpbutton.innerText = 'If its yours, you can still see deploy log';
+        dpbutton.innerText = 'If its yours, you can still see deploy logs';
         dpbutton.href = 'https://app.netlify.com/sites/' + slug;
       } else {
         // nothing at all
