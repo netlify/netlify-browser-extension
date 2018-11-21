@@ -1,14 +1,16 @@
+var urlHost;
 var getLocation = function(href) {
   var l = document.createElement('a');
   l.href = href;
   return l;
 };
+
 function onMessage(request, sender, sendResponse) {
-  // console.log('backgroundjs', {
-  //   request,
-  //   sender,
-  //   sendResponse
-  // });
+  console.log('backgroundjs', {
+    request,
+    sender,
+    sendResponse
+  });
   if (request.netlifyPage) {
     var url = getLocation(sender.url);
     var slug = url.hostname;
@@ -30,6 +32,11 @@ function onMessage(request, sender, sendResponse) {
       hiFrom: 'backgroundjs',
       slug
     });
+  }
+  if (request.method === 'setHost') {
+    urlHost = request.url
+  }else if(request.method === 'getHost'){
+    sendResponse(urlHost)
   }
   if (request.get_version) {
     browser.tabs.query(

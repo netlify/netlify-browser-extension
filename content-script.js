@@ -14,12 +14,6 @@ req.onreadystatechange = function() {
   }
 };
 
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  browser.runtime.sendMessage(
-    {
-      hiFrom: 'contentscript',
-      url: document.location
-    },
-    function(response) {}
-  );
-});
+var host = document.location.host
+
+browser.runtime.sendMessage({method:'setHost', url: host})
