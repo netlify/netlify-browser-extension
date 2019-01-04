@@ -5,7 +5,12 @@ var getLocation = function(href) {
   return l;
 };
 
-let webExtensionAPI = chrome || browser;
+let webExtensionAPI;
+try {
+  webExtensionAPI = browser; //ffox
+} catch {
+  webExtensionAPI = chrome;
+}
 
 function onMessage(request, sender, sendResponse) {
   if (request.netlifyPage) {

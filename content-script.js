@@ -3,7 +3,12 @@
 // but using webview cos fetch is blocked https://developer.chrome.com/extensions/manifest/sandbox
 // nvm lol you can do async xmlhttp
 
-let webExtensionAPI = browser || chrome;
+let webExtensionAPI;
+try {
+  webExtensionAPI = browser; //ffox
+} catch {
+  webExtensionAPI = chrome;
+}
 
 var req = new XMLHttpRequest();
 req.open('GET', document.location);
