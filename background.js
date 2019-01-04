@@ -5,12 +5,7 @@ var getLocation = function(href) {
   return l;
 };
 
-let webExtensionAPI;
-try {
-  webExtensionAPI = browser; //ffox
-} catch {
-  webExtensionAPI = chrome;
-}
+let webExtensionAPI = browser || chrome;
 
 function onMessage(request, sender, sendResponse) {
   if (request.netlifyPage) {
@@ -22,7 +17,7 @@ function onMessage(request, sender, sendResponse) {
       tabId: sender.tab.id
     });
     webExtensionAPI.pageAction.setTitle({
-      title: 'Netlify Site!',
+      title: "It's a Netlify Site!",
       tabId: sender.tab.id
     });
     webExtensionAPI.pageAction.setPopup({
@@ -34,6 +29,9 @@ function onMessage(request, sender, sendResponse) {
       hiFrom: 'backgroundjs',
       slug
     });
+  } else {
+    console.log('hiding');
+    chrome.pageAction.hide(sender.tab.id, () => console.log('done'));
   }
   if (request.method === 'setHost') {
     urlHost = request.url;

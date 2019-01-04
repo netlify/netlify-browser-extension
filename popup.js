@@ -23,7 +23,7 @@ webExtensionAPI.runtime.sendMessage({ method: 'getHost' }, function(response) {
   fetch('https://api.netlify.com/api/v1/sites/' + host)
     .then(res => res.json())
     .then(res => {
-      console.log('[netlify firefox extension] Yes!', { res });
+      console.log('[netlify browser extension] Yes!', { res });
       document
         .getElementById('label')
         .appendChild(document.createTextNode('by ' + res.account_name));
@@ -46,7 +46,7 @@ webExtensionAPI.runtime.sendMessage({ method: 'getHost' }, function(response) {
       dpbutton.hidden = false;
     })
     .catch(err => {
-      console.log('[netlify firefox extension] Nope :(', { err });
+      console.log('[netlify browser extension] Nope :(', { err });
       document
         .getElementById('label')
         .appendChild(
