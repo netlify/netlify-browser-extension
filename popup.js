@@ -18,7 +18,7 @@ webExtensionAPI.runtime.sendMessage({ method: 'getHost' }, function(response) {
   const dpbutton = document.getElementById('dpbutton');
   const slug = host.split('.')[0];
   console.log(
-    '[netlify firefox extension] checking if netlify site is open source...'
+    '[netlify browser extension] checking if netlify site is open source...'
   );
   fetch('https://api.netlify.com/api/v1/sites/' + host)
     .then(res => res.json())

@@ -35,8 +35,7 @@ function onMessage(request, sender, sendResponse) {
       slug
     });
   } else {
-    console.log('hiding');
-    chrome.pageAction.hide(sender.tab.id, () => console.log('done'));
+    chrome.pageAction.hide(sender.tab.id);
   }
   if (request.method === 'setHost') {
     urlHost = request.url;
