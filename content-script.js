@@ -21,5 +21,5 @@ req.onreadystatechange = function() {
 };
 
 var host = document.location.host;
-
+console.log({ host });
 webExtensionAPI.runtime.sendMessage({ method: 'setHost', url: host });

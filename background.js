@@ -13,7 +13,8 @@ try {
 }
 
 function onMessage(request, sender, sendResponse) {
-  if (request.netlifyPage) {
+  console.log('sendertab', sender.tab);
+  if (request.netlifyPage && sender.tab) {
     var url = getLocation(sender.url);
     var slug = url.hostname;
     webExtensionAPI.pageAction.show(sender.tab.id);
@@ -30,16 +31,18 @@ function onMessage(request, sender, sendResponse) {
       popup: 'popup.html'
     });
     sendResponse({
-      // goes to poup
+      // goes to popup
       hiFrom: 'backgroundjs',
       slug
     });
   } else {
-    chrome.pageAction.hide(sender.tab.id);
+    // chrome.pageAction.hide(sender.tab.id);
   }
   if (request.method === 'setHost') {
+    console.log('setHost', { request });
     urlHost = request.url;
   } else if (request.method === 'getHost') {
+    console.log('getHost', { urlHost });
     sendResponse(urlHost);
   }
   if (request.get_version) {
