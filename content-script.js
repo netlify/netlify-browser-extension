@@ -3,23 +3,48 @@
 // but using webview cos fetch is blocked https://developer.chrome.com/extensions/manifest/sandbox
 // nvm lol you can do async xmlhttp
 
-let webExtensionAPI;
+let webExtensionAPI
 try {
-  webExtensionAPI = browser; //ffox
+  webExtensionAPI = browser //ffox
 } catch {
-  webExtensionAPI = chrome;
+  webExtensionAPI = chrome
 }
 
-var req = new XMLHttpRequest();
-req.open('GET', document.location);
-req.send(null);
-req.onreadystatechange = function() {
-  var header = req.getResponseHeader('server');
-  webExtensionAPI.runtime.sendMessage({
-    netlifyPage: header === 'Netlify'
-  });
-};
+let DEBUG = true
 
-var host = document.location.host;
-console.log({ host });
-webExtensionAPI.runtime.sendMessage({ method: 'setHost', url: host });
+var req = new XMLHttpRequest()
+req.open("GET", document.location)
+req.send(null)
+req.onreadystatechange = function() {
+  var header = req.getResponseHeader("server")
+  // if (DEBUG) console.log({ header })
+  webExtensionAPI.runtime.sendMessage({
+    netlifyPage: header === "Netlify"
+  })
+}
+
+var { host, pathname } = document.location
+// if (DEBUG) console.log({ location: document.location })
+webExtensionAPI.runtime.sendMessage({ method: "setHost", url: host })
+
+var PHActions = document.getElementsByClassName("pagehead-actions")
+if (host === "github.com" && typeof pathname === "string" && PHActions.length) {
+  const pathsplit = pathname.split("/")
+  if (pathsplit.length > 2) {
+    var el = PHActions[0].children[0]
+    const user = pathsplit[1]
+    const repo = pathsplit[2]
+    const newUrl = `https://app.netlify.com/start/deploy?repository=https://github.com/${user}/${repo}`
+    var container = document.createElement("li")
+    var newBtn = document.createElement("a")
+    newBtn.setAttribute("class", "btn btn-sm")
+    newBtn.setAttribute("href", newUrl)
+    newBtn.setAttribute("target", "_blank")
+    var newContent = document.createTextNode("💎 Deploy To Netlify")
+    // add the text node to the newly created div
+    newBtn.appendChild(newContent)
+    container.appendChild(newBtn)
+
+    el.parentNode.insertBefore(container, el)
+  }
+}

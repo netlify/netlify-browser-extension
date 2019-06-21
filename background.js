@@ -1,49 +1,49 @@
-var urlHost;
+var urlHost
 var getLocation = function(href) {
-  var l = document.createElement('a');
-  l.href = href;
-  return l;
-};
+  var l = document.createElement("a")
+  l.href = href
+  return l
+}
 
-let webExtensionAPI;
+let webExtensionAPI
 try {
-  webExtensionAPI = browser; //ffox
+  webExtensionAPI = browser //ffox
 } catch {
-  webExtensionAPI = chrome;
+  webExtensionAPI = chrome
 }
 
 function onMessage(request, sender, sendResponse) {
-  console.log('sendertab', sender.tab);
+  console.log("onMessage", request.netlifyPage, sender.tab)
   if (request.netlifyPage && sender.tab) {
-    var url = getLocation(sender.url);
-    var slug = url.hostname;
-    webExtensionAPI.pageAction.show(sender.tab.id);
+    var url = getLocation(sender.url)
+    var slug = url.hostname
+    webExtensionAPI.pageAction.show(sender.tab.id)
     webExtensionAPI.pageAction.setIcon({
-      path: 'logo16.png',
+      path: "logo16.png",
       tabId: sender.tab.id
-    });
+    })
     webExtensionAPI.pageAction.setTitle({
       title: "It's a Netlify Site!",
       tabId: sender.tab.id
-    });
+    })
     webExtensionAPI.pageAction.setPopup({
       tabId: sender.tab.id,
-      popup: 'popup.html'
-    });
+      popup: "popup.html"
+    })
     sendResponse({
       // goes to popup
-      hiFrom: 'backgroundjs',
+      hiFrom: "backgroundjs",
       slug
-    });
+    })
   } else {
     // chrome.pageAction.hide(sender.tab.id);
   }
-  if (request.method === 'setHost') {
-    console.log('setHost', { request });
-    urlHost = request.url;
-  } else if (request.method === 'getHost') {
-    console.log('getHost', { urlHost });
-    sendResponse(urlHost);
+  if (request.method === "setHost") {
+    console.log("setHost", { request })
+    urlHost = request.url
+  } else if (request.method === "getHost") {
+    console.log("getHost", { urlHost })
+    sendResponse(urlHost)
   }
   if (request.get_version) {
     webExtensionAPI.tabs.query(
@@ -55,19 +55,19 @@ function onMessage(request, sender, sendResponse) {
         webExtensionAPI.tabs.sendMessage(
           tabs[0].id,
           {
-            check: 'version'
+            check: "version"
           },
           function(response) {
-            return response;
+            return response
           }
-        );
+        )
       }
-    );
+    )
   }
 }
-webExtensionAPI.runtime.onMessage.addListener(onMessage);
+webExtensionAPI.runtime.onMessage.addListener(onMessage)
 
 //Checks if version in use is lower than the current version
 function lowerVersion(in_use_version, current_version) {
-  return false;
+  return false
 }

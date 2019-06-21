@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-      <meta content="utf-8" http-equiv="encoding">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
   </head>
 
   <body>
     <div style="white-space: nowrap;">
-      It's a Netlify site! <b><span id="label"></span></b>
+      🎉 It's a Netlify site! <b><span id="label"></span></b>
       <p><span id="version"></span></p>
-      <span style="color: red;" id="outdated"></span>
-      <!-- <p><img id="img" height="100" /></p> -->
-      <div style="display: flex; justify-content: space-between">
-        <span id="dpspan">
-          [<a id="dpbutton" target="_blank">Deploy Logs</a>]
-        </span>
-        <span id="ghspan"> [<a id="ghbutton" target="_blank">Github</a>] </span>
+      <div id="loading">[<em>Checking if site is open source...</em>]</div>
+      <div id="loaded" hidden>
+        <div style="display: flex; justify-content: space-between">
+          <span id="dpspan"> [<a id="dpbutton" target="_blank">Deploy Logs</a>] </span>
+          <span id="ghspan"> [<a id="ghbutton" target="_blank">Github</a>] </span>
+        </div>
       </div>
     </div>
     <script src="popup.js"></script>
