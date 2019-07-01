@@ -1,4 +1,4 @@
-var urlHost
+var urlHost, requestHeader
 var getLocation = function(href) {
   var l = document.createElement("a")
   l.href = href
@@ -13,8 +13,8 @@ try {
 }
 
 function onMessage(request, sender, sendResponse) {
-  console.log("onMessage", request.netlifyPage, sender.tab)
-  if (request.netlifyPage && sender.tab) {
+  console.log("onMessage", { request })
+  if (request.netlifyPage && request.netlifyPage["x-nf-request-id"] && sender.tab) {
     var url = getLocation(sender.url)
     var slug = url.hostname
     webExtensionAPI.pageAction.show(sender.tab.id)
@@ -30,8 +30,9 @@ function onMessage(request, sender, sendResponse) {
       tabId: sender.tab.id,
       popup: "popup.html"
     })
+    requestHeader = request.netlifyPage
     sendResponse({
-      // goes to popup
+      // goes to popup.js
       hiFrom: "backgroundjs",
       slug
     })
@@ -43,7 +44,7 @@ function onMessage(request, sender, sendResponse) {
     urlHost = request.url
   } else if (request.method === "getHost") {
     console.log("getHost", { urlHost })
-    sendResponse(urlHost)
+    sendResponse({ urlHost, requestHeader })
   }
   if (request.get_version) {
     webExtensionAPI.tabs.query(

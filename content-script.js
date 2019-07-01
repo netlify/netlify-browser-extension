@@ -10,16 +10,34 @@ try {
   webExtensionAPI = chrome
 }
 
-let DEBUG = true
+// let DEBUG = true
+let DEBUG = false
 
 var req = new XMLHttpRequest()
 req.open("GET", document.location)
 req.send(null)
 req.onreadystatechange = function() {
-  var header = req.getResponseHeader("server")
+  // // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/getAllResponseHeaders
+  // Get the raw header string
+  var headers = req.getAllResponseHeaders()
+
+  // Convert the header string into an array
+  // of individual headers
+  var arr = headers.trim().split(/[\r\n]+/)
+
+  // Create a map of header names to values
+  var headerMap = {}
+  arr.forEach(function(line) {
+    var parts = line.split(": ")
+    var header = parts.shift()
+    var value = parts.join(": ")
+    headerMap[header] = value
+  })
+
+  // var header = req.getResponseHeader("server")
   // if (DEBUG) console.log({ header })
   webExtensionAPI.runtime.sendMessage({
-    netlifyPage: header === "Netlify"
+    netlifyPage: headerMap
   })
 }
 

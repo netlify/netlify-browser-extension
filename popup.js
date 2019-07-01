@@ -5,20 +5,18 @@ try {
   webExtensionAPI = chrome
 }
 const DEBUG = true
-//Send version request to background page
-webExtensionAPI.runtime.sendMessage({ get_version: "true" }, function(response) {
-  // console.log('popupjs sendMessage received', { response });
-})
+// //Send version request to background page
+// webExtensionAPI.runtime.sendMessage({ get_version: "true" }, function(response) {
+//   // console.log('popupjs sendMessage received', { response });
+// })
 
 webExtensionAPI.runtime.sendMessage({ method: "getHost" }, function(response) {
-  var host = response
   const loading = document.getElementById("loading")
   const loaded = document.getElementById("loaded")
   const ghbutton = document.getElementById("ghbutton")
   const ghspan = document.getElementById("ghspan")
   const dpbutton = document.getElementById("dpbutton")
   if (host === null) {
-    console.log("[netlify browser extension] Nope :(", { err })
     document.getElementById("label").appendChild(document.createTextNode("but its deploy logs are not public."))
     // nothing at all
     ghspan.hidden = true
@@ -27,7 +25,10 @@ webExtensionAPI.runtime.sendMessage({ method: "getHost" }, function(response) {
     loaded.hidden = false
     return
   }
-  if (DEBUG) console.log({ host })
+  var { urlHost: host, requestHeader } = response
+
+  if (DEBUG) console.log({ host, requestHeader })
+  let serverHeaderText = "Server header: " + (requestHeader && requestHeader.server)
   const slug = host.split(".")[0]
   if (DEBUG) console.log({ slug })
   if (DEBUG) console.log("[netlify browser extension] checking if netlify site is open source...")
@@ -39,7 +40,12 @@ webExtensionAPI.runtime.sendMessage({ method: "getHost" }, function(response) {
       document
         .getElementById("version")
         .appendChild(
-          document.createTextNode("Last published " + new Date(res.published_deploy.published_at).toLocaleDateString())
+          document.createTextNode(
+            "Last published " +
+              new Date(res.published_deploy.published_at).toLocaleDateString() +
+              ". " +
+              serverHeaderText
+          )
         ) // may also want commit_url and deploy_ssl_url and title
 
       // const img = document.getElementById('img');
@@ -55,7 +61,9 @@ webExtensionAPI.runtime.sendMessage({ method: "getHost" }, function(response) {
     })
     .catch((err) => {
       console.log("[netlify browser extension] Nope :(", { err })
-      document.getElementById("label").appendChild(document.createTextNode("but its deploy logs are not public."))
+      document
+        .getElementById("label")
+        .appendChild(document.createTextNode("but its deploy logs are not public. " + serverHeaderText))
       if (host.includes("netlify.com")) {
         // attempt to show deploys
         ghspan.hidden = true
