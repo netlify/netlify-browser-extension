@@ -1,5 +1,7 @@
 # Netlify Browser Extension
 
+A browser extension to report if a site is hosted on Netlify and add a deploy button to Github
+
 ## Install
 
 - [Chrome](https://chrome.google.com/webstore/detail/netlify-chrome-extension/dkhfpnphbcckigklfkaemnjdmghhcaoh)
@@ -8,7 +10,7 @@
 
 ## Features
 
-This tiny browser extension does 2 things, it:
+This browser extension does 2 things, it:
 
 - Tells you if a site is hosted on Netlify via the menubar
 - Adds a Deploy to Netlify button to your Github repositories with a `netlify.toml` file
