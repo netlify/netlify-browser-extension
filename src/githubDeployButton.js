@@ -1,12 +1,23 @@
 const githubHeader = document.getElementsByClassName('pagehead-actions')[0];
 let urlParts = window.location.pathname.split('/');
 if (urlParts.length > 2) {
-  fetch(
-    `https://api.github.com/repos${window.location.pathname}/contents/netlify.toml`
-  )
-    .then(res => res.json())
-    .then(res => {
-      if (res.name == 'netlify.toml') {
+  fetch(`https://api.github.com/repos${window.location.pathname}/contents`)
+    .then(async res => {
+      let data = await res.json();
+      if (data.message == 'Not Found') {
+        console.debug(
+          '[Netlify Browser Extention]',
+          'Repo/Files were not found!'
+        );
+        return;
+      }
+      let netlifyConfigFiles = (data || []).filter(
+        file =>
+          file.name == 'netlify.toml' ||
+          file.name == 'netlify.yml' ||
+          file.name == 'netlify.json'
+      );
+      if (netlifyConfigFiles.length > 0) {
         // Core Button
         var netlifyBtn = document.createElement('a');
         netlifyBtn.setAttribute('class', 'btn btn-sm');
@@ -24,5 +35,8 @@ if (urlParts.length > 2) {
         // Add Button Container to header
         githubHeader.insertBefore(container, githubHeader.firstChild);
       }
+    })
+    .catch(err => {
+      console.log('[Netlify Browser Extention]', 'Error:', err);
     });
 }
