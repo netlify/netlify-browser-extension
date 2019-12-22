@@ -1,40 +1,22 @@
-# netlify-browser-extension
+# Netlify Browser Extension
 
-Get it:
+A browser extension to report if a site is hosted on Netlify and add a deploy button to Github
 
-- [for Chrome](https://chrome.google.com/webstore/detail/netlify-chrome-extension/dkhfpnphbcckigklfkaemnjdmghhcaoh)
-- [for Firefox](https://addons.mozilla.org/en-US/firefox/addon/netlify-browser-extension) [thanks to @nero2009!](https://github.com/netlify/netlify-browser-extension/pull/2#issuecomment-440616828)
+## Install
+
+- [Chrome](https://chrome.google.com/webstore/detail/netlify-chrome-extension/dkhfpnphbcckigklfkaemnjdmghhcaoh)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/netlify-browser-extension) [thanks to @nero2009!](https://github.com/netlify/netlify-browser-extension/pull/2#issuecomment-440616828)
 - for Edge (not available yet)
 
----
+## Features
 
+This browser extension does 2 things, it:
 
-## Explanation
-
-This is a tiny little browser extension that does a couple things:
-
-- tells you if a site is hosted on Netlify
-- if it is:
-  - if it is a `.netlify.com` host, check if it is open source:
-    - if it is:
-      - show you a link to deploy log AND github page
-    - else:
-      - show you a link to deploy log, only useful if you own it
-  - else:
-    - nothing else we can do
-- else:
-  - not active
-
-PRs/feature suggestions welcome
-
----
+- Tells you if a site is hosted on Netlify via the menubar
+- Adds a Deploy to Netlify button to your Github repositories with a `netlify.toml`, `netlify.yml` or `netlify.json` file
 
 ## How it works
 
-Honestly its probably more complicated than needs to be but i based it off of other extensions that do the same thing.
+This extension works by monitoring web request to main_frame's (browser tabs) and checks for the `x-nf-request-id` header to be present. This header is used over the `server` header so Netlify sites fronted by Cloudflare and other similar services are still detected correctly. When the header is found the toolbar item turns blue and when clicked attempts to show details about the site, if they are publically accessible.
 
-- inject `content-script` into every page
-- script pings `background.js` that there is a new page
-- `background.js` activates the "browser action" (the little logo on the browser bar) if its a Netlify site by sniffing the `Server` field in the response header.
-- if it is a Netlify site and you click the "browser action":
-  - if it is on `.netlify.com` host, `popup.js` checks if it is open source and manipulates `popup.html` accordingly.
+When browsing the Github domain a script is injected into the page which is responsible for checking for a netlify config file inside the repository and if one exists creating the deploy button in the toolbar.
