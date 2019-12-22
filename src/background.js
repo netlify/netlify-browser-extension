@@ -8,6 +8,14 @@ try {
   extentionAPI = chrome;
 }
 
+// Error handler callback
+// This is used to "hide" errors which occur when tabs are used after they are closed
+function errorHandlingCallback() {
+  if (chrome.runtime.lastError) {
+    console.log(chrome.runtime.lastError.message);
+  }
+}
+
 // Detect the Netlify headers and update netlifySite
 extentionAPI.webRequest.onCompleted.addListener(
   e => {
@@ -22,42 +30,54 @@ extentionAPI.webRequest.onCompleted.addListener(
 );
 
 // Change the browser action look based on the netlifySite on tab load
-extentionAPI.tabs.onUpdated.addListener((tabId, state, tabDetails) => { 
+extentionAPI.tabs.onUpdated.addListener((tabId, state, tabDetails) => {
   // Allow the menu button to be activated
   extentionAPI.pageAction.show(tabId);
 
   // If tab details are non existant it is not a Netlify site, return
-  if(!(tabId in netlifySite)) {
+  if (!(tabId in netlifySite)) {
     return;
   }
 
   // Once tab has navigated to another site unset it as Netlify site, reset the menu item and return
   if (netlifySite[tabId] != tabDetails.url) {
-    if(tabDetails.status != "loading") {
+    if (tabDetails.status != 'loading') {
       delete netlifySite[tabId];
 
-      extentionAPI.pageAction.setIcon({
-        tabId: tabId,
-        path: 'assets/logo16-gray.png'
-      });
-      extentionAPI.pageAction.setTitle({
-        tabId: tabId,
-        title: "Not hosted on Netlify :("
-      });
+      extentionAPI.pageAction.setIcon(
+        {
+          tabId: tabId,
+          path: 'assets/logo16-gray.png'
+        },
+        errorHandlingCallback
+      );
+      extentionAPI.pageAction.setTitle(
+        {
+          tabId: tabId,
+          title: 'Not hosted on Netlify :('
+        },
+        errorHandlingCallback
+      );
     }
-    
+
     return;
   }
 
   // Update the Netlify browser action look
-  extentionAPI.pageAction.setIcon({
-    tabId: tabId,
-    path: 'assets/logo16.png'
-  });
-  extentionAPI.pageAction.setTitle({
-    tabId: tabId,
-    title: "It's a Netlify Site!"
-  });
+  extentionAPI.pageAction.setIcon(
+    {
+      tabId: tabId,
+      path: 'assets/logo16.png'
+    },
+    errorHandlingCallback
+  );
+  extentionAPI.pageAction.setTitle(
+    {
+      tabId: tabId,
+      title: "It's a Netlify Site!"
+    },
+    errorHandlingCallback
+  );
 });
 
 // Allow the popup to access information about whether a tab is a Netlify site
