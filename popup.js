@@ -64,7 +64,7 @@ webExtensionAPI.runtime.sendMessage({ method: "getHost" }, function(response) {
       document
         .getElementById("label")
         .appendChild(document.createTextNode("but its deploy logs are not public. " + serverHeaderText))
-      if (host.includes("netlify.com")) {
+      if (host.includes("netlify.com") || host.includes("netlify.app")) {
         // attempt to show deploys
         ghspan.hidden = true
         dpspan.hidden = false
